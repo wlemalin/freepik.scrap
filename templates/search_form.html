@@ -229,6 +229,29 @@
             background-color: rgba(31, 31, 31);
             z-index: 80; /* Ensure it's below the trainTab but above other content */
         }
+        #deleteSelectedImages {
+            position: fixed;
+            top: 110px;
+            left: 200px;
+            padding: 10px 20px;
+            background-color: #d9534f; /* Bootstrap's btn-danger color */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: Arial, sans-serif;
+            margin-top: 20px; /* Adjust based on layout */
+            z-index: 10;
+        }       
+
+        #deleteSelectedImages:hover {
+            background-color: #c9302c; /* Darker shade for hover */
+        }
+
+        #deleteSelectedImages:active {
+            background-color: #ac2925; /* Even darker shade for active/click */
+        }
+
 
     </style>
 </head>
@@ -278,6 +301,7 @@
     </div>
     <div class="image-container">
          <div id="overlay" style="display:none;"></div>
+         <button id="deleteSelectedImages">Delete Selected Images</button>
          <div id="DisplayResult">
                          
              {% if image_url %}
@@ -422,7 +446,19 @@
                 }
             });
         });
-
+        document.addEventListener('DOMContentLoaded', () => {
+            const deleteButton = document.getElementById('deleteSelectedImages');
+        
+            deleteButton.addEventListener('click', () => {
+                // Select all selected images within the DisplayResult container
+                const selectedImages = document.querySelectorAll('#DisplayResult .image.selected');
+                
+                // Remove each selected image
+                selectedImages.forEach(image => {
+                    image.remove(); // This removes the image from the DOM
+                });
+            });
+        });
         
     </script>
 </body>
