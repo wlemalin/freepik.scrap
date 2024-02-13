@@ -80,9 +80,9 @@ class link:
 
 #create a path directory 
 def load_path(dirname:str):
-     path = os.path.join(os.getcwd(), dirname) 
+     path = os.path.join(os.getcwd(), 'album//', dirname) 
      if not os.path.exists(path):
-         os.mkdir(path)
+         os. makedirs(path)
      return path
 
 #downloader
@@ -105,7 +105,7 @@ def create_tag(category, sample_size):
     i = sample_size
     nb_pictures = f"{i} Pictures"  
     
-    pic_icon = Image.open(f"{category}/{category}1.jpg")       
+    pic_icon = Image.open(f"album/{category}/{category}1.jpg")       
     icon = pic_icon.resize((75,75))
     icon = icon.convert("RGBA")
     
