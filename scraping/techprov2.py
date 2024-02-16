@@ -131,12 +131,10 @@ def create_tag(category, sample_size):
     myFont_count = ImageFont.truetype('static/font/Georgia.ttf', 22)
     I1.text((105,7), tag_title, font=myFont_class, fill=(41, 41, 41))
     I1.text((113,52), nb_pictures, font=myFont_count, fill=(41, 41, 41))
-    #if not os.path.exists("static//images//tags"):
-    #    os. makedirs("static//images//tags")
     album_tag.save(f"static/images/tags/{category}_tag.png", format="png")
     #album_tag.show()
     
 def get_tags():
     image_directory = 'static/images/tags'
-    image_urls = [os.path.join(image_directory, filename) for filename in os.listdir(image_directory) if filename.endswith(('.png', '.jpg', '.jpeg'))]        
-    return image_urls
+    tag_list = [os.path.join(image_directory, filename) for filename in os.listdir(image_directory) if filename.endswith(('.png', '.jpg', '.jpeg'))]        
+    return tag_list
