@@ -306,7 +306,7 @@
         <div id="overlay" style="display:none;"></div>
         
         {% if request.endpoint == 'projet' %}
-        <button id="deleteSelectedImages">Delete Selected Images</button>
+        <button id="deleteSelectedImages" action='/proje'>Delete Selected Images</button>
         {% endif %}
         
         <div id="DisplayResult">
@@ -452,19 +452,43 @@
             }
         });
     });
-    document.addEventListener('DOMContentLoaded', () => {
-        const deleteButton = document.getElementById('deleteSelectedImages');
     
+    document.addEventListener('DOMContentLoaded', () => {
+    const deleteButton = document.getElementById('deleteSelectedImages');
+    
+    if (deleteButton) {
         deleteButton.addEventListener('click', () => {
             // Select all selected images within the DisplayResult container
             const selectedImages = document.querySelectorAll('#DisplayResult .image.selected');
             
-            // Remove each selected image
+            // Create an array of the selected image URLs
+            const imageUrls = Array.from(selectedImages).map(img => img.getAttribute('src'));
+
+            // Send the array to the server
+            fetch('/remove-images', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ urls: imageUrls }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                // Optionally, update the UI based on the response
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+
+            // Remove each selected image from the DOM
             selectedImages.forEach(image => {
-                image.remove(); // This removes the image from the DOM
+                image.remove();
             });
         });
-    });
+    }
+});
+
     </script>
 </body>
 </html>
