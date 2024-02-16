@@ -1,18 +1,16 @@
-from flask import Blueprint, render_template, request, session, jsonify
-from scraping.techprov2 import get_tags, link, research, download_page, create_tag
+from flask import Flask, render_template, request, jsonify, session
+from techprov2 import *
+import os
 
-webapp = Blueprint('webapp', __name__, template_folder='templates')
+app = Flask(__name__)
+app.secret_key = 'your_very_secret_key_here'  # Set a secure secret key
 
-
-#app = Flask(__name__)
-#app.secret_key = 'your_very_secret_key_here'  # Set a secure secret key
-
-@webapp.route("/", methods=['GET', 'POST'])
+@app.route("/", methods=['GET', 'POST'])
 def index():
     tag_list = get_tags()
     return render_template('search_form.html', tag_list=tag_list)
 
-@webapp.route('/projet', methods=['GET', 'POST'])
+@app.route('/projet', methods=['GET', 'POST'])
 def projet():
     if request.method == "POST":
         entry = request.form.get("url_entry").split(' ')
@@ -38,3 +36,7 @@ def remove_images():
     session['image_url'] = [url for url in session.get('image_url', []) if url not in urls_to_remove]
     # Confirm the removal via JSON response
     return jsonify({"success": session['image_url'], "message": "Images removed successfully."})
+
+if __name__ == '__main__':
+    app.run(debug=True, use_reloader=False)
+
