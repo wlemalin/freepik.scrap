@@ -29,7 +29,7 @@ def projet():
     tag_list = get_tags()
     return render_template('search_form.html', tag_list=tag_list)
 
-@app.route('/remove-images', methods=['POST'])
+@webapp.route('/remove-images', methods=['POST'])
 def remove_images():
     if not session.get('image_url'): # Ensure there's a list of images in the session
         return jsonify({"success": False, "message": "No images to remove."})
