@@ -1,9 +1,9 @@
 from flask import Blueprint, render_template, request
-from scraping.techprov2 import get_tags, link, research, download_page, create_tag
+from scraping.techprov2 import get_tags, Link, generate_search_link, download_page, create_tag
 
 webapp = Blueprint('webapp', __name__, template_folder='templates')
 
-@webapp.route("/", methods=['GET', 'POST'])
+@webapp.route("/", methods=['GET'])
 def index():
     tag_list = get_tags()
     return render_template('search_form.html', tag_list=tag_list)
@@ -12,7 +12,7 @@ def index():
 def projet():
     if request.method == "POST":
         entry = request.form.get("url_entry").split(' ')
-        img_link = link(research(*entry))
+        img_link = Link(generate_search_link(*entry))
         num = int(request.form.get("num_entry"))
         image_url = img_link.num_list(num)
         tag_list = get_tags()
