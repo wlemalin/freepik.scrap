@@ -7,29 +7,59 @@ import re
 
 #get url with a simple user agent fake 
 def get_url(url):
-    user_agents_list = [
-        'Mozilla/5.0 (iPad; CPU OS 12_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148',
-        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.83 Safari/537.36',
-        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36'
-        ]
-    r = requests.get(url, headers={'User-Agent': random.choice(user_agents_list)})
+    '''
+    Function to retrieve the HTML content of a given URL by using a fake user agent.
+    
+    Args:
+        url (str): The URL to retrieve the content from.
+        
+    Returns:
+        str: The HTML content of the URL.
+    '''
+    user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36'
+    r = requests.get(url, headers={'User-Agent': random.choice(user_agent)})
     return r.text
 
 #rechercher un mot sur freepik
 def research(*words):
-    freepik = "https://fr.freepik.com/search?ai=exclude&format=search&page=1&query="
-    freepik += f'{"%20".join(words)}&type=photo'
-    return freepik
+    '''
+    Function to generate a search link for the Freepik website based on provided keywords.
+    
+    Args:
+        *words (str): Variable number of keyword arguments representing the search terms.
+        
+    Returns:
+        str: A URL link for the search results on the Freepik website.
+    '''
+    return "https://fr.freepik.com/search?ai=exclude&format=search&page=1&query=" + f'{"%20".join(words)}&type=photo'
 
 #class link
 class link:
-    """description de la classe"""     
+    """
+    Class for managing links and extracting information from web pages.
+    """     
+
     def __init__(self, url):
+     """
+    Initialize the Link object with a URL and parse its HTML content.
+    
+    Args:
+        url (str): The URL of the web page.
+    """
      self.url = url
      self.html = BeautifulSoup(get_url(self.url), 'html.parser')
 
     #scrap images and return the name of one class
-    def selectionneur(self, number):
+    def selector(self, number):
+        """
+        Scrap images and return the class name of the specified image.
+        
+        Args:
+            number (int): The index of the image to extract the class name from.
+        
+        Returns:
+            str: The class name of the image, or "no class name" if not found.
+        """
         try:
             pic_html = self.html.find_all('img')[number]['class']
             return pic_html
@@ -39,20 +69,48 @@ class link:
     
     #create a list of all class thanks to selectionneur
     def c_list(self, n):
+        """
+        Create a list of unique class names from images on the page.
+        
+        Args:
+            n (int): The number of images to consider.
+        
+        Returns:
+            list: A list of unique class names.
+        """
         names_list = []
         for i in range(n):
-         if self.selectionneur(i)[0] not in names_list:
-             names_list.append(self.selectionneur(i)[0])
+         if self.selector(i)[0] not in names_list:
+             names_list.append(self.selector(i)[0])
         return names_list
 
     #get the picture url
     def get_picture(self, class_name, image_number = 0):
+        """
+        Get the URL of a picture with a specific class name.
+        
+        Args:
+            class_name (str): The class name of the picture.
+            image_number (int): The index of the image with the specified class name.
+        
+        Returns:
+            str: The URL of the picture.
+        """
         soup = self.html
         picture = soup.find_all('img', {'class': class_name})[image_number]['data-src']
         return picture
     
     #return a list of pictures url
     def url_list(self, class_name="lzy"):
+        """
+        Return a list of picture URLs with a specific class name.
+        
+        Args:
+            class_name (str): The class name of the pictures to retrieve.
+        
+        Returns:
+            list: A list of URLs of pictures with the specified class name.
+        """
         soup = self.html
         img_list = soup.find_all('img', {f'class': {class_name}})
         url_list = [img['data-src'] for img in img_list if 'data-src' in img.attrs]
@@ -60,15 +118,42 @@ class link:
     
     #selectionner une page sur fr.freepik.com 
     def page_selection(self, page=1):
+        """
+        Select a specific page on fr.freepik.com.
+        
+        Args:
+            page (int): The page number to select.
+        
+        Returns:
+            Link: A new Link object representing the selected page.
+        """
         p_url = re.sub(r'page=[^&]+', f'page={page}', self.url)
         return link(p_url)
     
     #liste des urls de page 
     def page_list(self, num:int):
+        """
+        Generate a list of URLs for a specified number of pages.
+        
+        Args:
+            num (int): The number of page URLs to generate.
+        
+        Returns:
+            list: A list of URLs for the specified number of pages.
+        """
         p_list = [self.page_selection(page=i+1).url for i in range(num)]
         return p_list
     
     def num_list(self, num=60):
+        """
+        Generate a list of picture URLs from multiple pages.
+        
+        Args:
+            num (int): The total number of picture URLs to retrieve.
+        
+        Returns:
+            list: A list of picture URLs up to the specified number.
+        """
         page = self.url_list()
         p=1
         
@@ -80,26 +165,58 @@ class link:
 
 #create a path directory 
 def load_path(dirname:str):
-     path = os.path.join(os.getcwd(), 'album//', dirname) 
-     if not os.path.exists(path):
-         os. makedirs(path)
-     return path
+    """
+    Create a directory for storing albums if it doesn't exist and return its path.
+
+    Args:
+        dirname (str): The name of the directory to be created.
+
+    Returns:
+        str: The path to the created directory.
+    """
+    path = os.path.join(os.getcwd(), 'album/', dirname) 
+    if not os.path.exists(path):
+        os. makedirs(path)
+    return path
 
 #downloader
 def download_image(url, dirname, file_name):
+    """
+    Download an image from a URL and save it to a specified directory with a given file name.
+
+    Args:
+        url (str): The URL of the image to download.
+        dirname (str): The name of the directory to save the image in.
+        file_name (str): The desired file name for the downloaded image.
+    """
     direction = load_path("_".join(dirname))
     with open(os.path.join(direction, f"{file_name}.jpg"), "wb+") as folder:
         folder.write(requests.get(url).content) 
 
-#télécharger toute la page 
+#télécharger une liste d'url d'images
 def download_page(url_list, dirname, file_name):
+    """
+    Download images from a list of URLs and save them with sequential file names.
+
+    Args:
+        url_list (list): A list of URLs of images to download.
+        dirname (str): The name of the directory to save the images in.
+        file_name (str): The base file name for the downloaded images.
+    """
     for i, url in enumerate(url_list):
         download_image(url, dirname, f"{file_name}{i}")
 
-#test = link(research(*["chat","seul"]))
-#len(test.num_list(66))
 
 def create_tag(category, sample_size):
+    """
+    Create a tag image for a category with a specified sample size.
+
+    Args:
+        category (str): The category for which the tag image is created.
+        sample_size (int): The sample size of the category.
+
+    This function creates a tag image containing the category title and sample size information.
+    """
     tag_title = category.capitalize()
     i = sample_size
     nb_pictures = f"{i} Pictures"  
@@ -131,12 +248,16 @@ def create_tag(category, sample_size):
     myFont_count = ImageFont.truetype('static/font/Georgia.ttf', 22)
     I1.text((105,7), tag_title, font=myFont_class, fill=(41, 41, 41))
     I1.text((113,52), nb_pictures, font=myFont_count, fill=(41, 41, 41))
-    #if not os.path.exists("static//images//tags"):
-    #    os. makedirs("static//images//tags")
     album_tag.save(f"static/images/tags/{category}_tag.png", format="png")
     #album_tag.show()
     
 def get_tags():
-    image_directory = 'static/images/tags'
+    """
+    Get the file paths of tag images in the tags directory.
+
+    Returns:
+        list: A list of file paths to tag images.
+    """
+    image_directory = './static/images/tags'
     image_urls = [os.path.join(image_directory, filename) for filename in os.listdir(image_directory) if filename.endswith(('.png', '.jpg', '.jpeg'))]        
     return image_urls
