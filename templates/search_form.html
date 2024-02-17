@@ -225,7 +225,7 @@
             top: 95px;
             left: 0;
             width: 100%;
-            heigth: calc(100% - 95px);
+            height: calc(100% - 95px);
             background-color: rgba(31, 31, 31);
             z-index: 80; /* Ensure it's below the trainTab but above other content */
         }
@@ -259,9 +259,13 @@
     <div id="topRectangle"></div>
     <div id="gray1Rectangle"></div>
     <div id="gray2Rectangle"></div>
-    <div class=".training-button-container">
-        <button id="TrainingButton">Training</button>
-    </div>
+    
+    <form action="/training" method="POST">
+        <div class=".training-button-container">
+            <button id="TrainingButton">Training</button>
+        </div>
+    </form>
+
     <div class="left-container">
         <div class="search-container">
             <form action="/projet" method="POST">
@@ -285,8 +289,8 @@
 
                 {% endif %}
 
-                <input type="submit" id="SearchButton" name="VAL" value="Search"></button> <!-- id="SearchButton" -->
-                <input type="submit" id="SearchButton" name="DOWN" value="Download"></button>
+                <input type="submit" id="SearchButton" name="VAL" value="Search"> <!-- id="SearchButton" -->
+                <input type="submit" id="SearchButton" name="DOWN" value="Download">
                 
                 
                 <div id="trainTab">

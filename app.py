@@ -36,6 +36,17 @@ def projet():
     tag_list = get_tags()
     return render_template('search_form.html', tag_list=tag_list)
 
+@app.route('/training', methods = ['POST', 'GET'])
+def training():
+    if request.method == 'POST':
+        tag_list = get_tags()
+        return render_template("train_form.html",
+                            tag_list = tag_list)
+    
+    tag_list = get_tags()
+    return render_template("train_form.html",
+                            tag_list = tag_list)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
