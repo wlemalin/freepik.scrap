@@ -1,2 +1,5 @@
-#Delete URLs from DL list
 #Split page search & DL
+#Add:
+  -DL bar
+  -Album display
+  -Remove album button
