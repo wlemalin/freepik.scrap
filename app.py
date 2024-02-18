@@ -1,10 +1,15 @@
 from flask import Flask, Blueprint, render_template, request, jsonify, session
+from utils.folder_creation import check_init_folders
 from scraping.techprov2 import  *
 import os
 #get_tags, link, research, download_page, create_tag
 
 app = Flask(__name__)
 app.secret_key = 'your_very_secret_key_here'  # Set a secure secret key
+
+if __name__ == '__main__':
+    # Initial checks
+    check_init_folders()
 
 @app.route("/", methods=['GET', 'POST'])
 def index():
