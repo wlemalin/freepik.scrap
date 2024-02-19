@@ -37,7 +37,7 @@ def generate_search_link(*words):
     '''
     return "https://fr.freepik.com/search?ai=exclude&format=search&page=1&query=" + f'{"%20".join(words)}&type=photo'
 
-class Link:
+class link:
     """
     Class for managing links and extracting information from web pages.
     """
@@ -126,7 +126,7 @@ class Link:
             Link: A new Link object representing the selected page.
         """
         p_url = re.sub(r'page=[^&]+', f'page={page}', self.url)
-        return Link(p_url)
+        return link(p_url)
     
     def page_list(self, num:int):
         """
