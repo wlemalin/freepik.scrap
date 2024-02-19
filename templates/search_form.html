@@ -260,7 +260,10 @@
     <div id="gray1Rectangle"></div>
     <div id="gray2Rectangle"></div>
     <div class=".training-button-container">
-        <button id="TrainingButton">Training</button>
+        <!-- <button id="TrainingButton">Training</button>  -->
+        <form action="/models" method="POST">
+             <input type="submit" id="TrainingButton" name="TRAIN" value="Training"></button> <!-- id="SearchButton" -->
+        </form>
     </div>
     <div class="left-container">
         <div class="search-container">
@@ -286,7 +289,7 @@
                 {% endif %}
 
                 <input type="submit" id="SearchButton" name="VAL" value="Search"></button> <!-- id="SearchButton" -->
-                <input type="submit" id="SearchButton" name="DOWN" value="Download"></button>
+
                 
                 
                 <div id="trainTab">
@@ -299,6 +302,11 @@
                     <!-- Duplicated drop zone -->
                     <div class="dropZone" style="position: relative; top: 80px; left: 20px; width: 297px; height: 68.25px; background-color: #555; border: 2px dashed #bbb; border-radius: 15px; margin: 10px auto; overflow: none;">Category 2</div>
                 </div>
+            </form>
+            <form action="/" method="POST">
+                {% if request.endpoint == 'projet' %}
+                <input type="submit" id="SearchButton" name="DOWN" value="Download" style="position: relative; left: 12px;"></button>
+                {% endif %}
             </form>
         </div>
     </div>
