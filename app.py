@@ -13,7 +13,7 @@ if __name__ == '__main__':
 
 @app.route("/", methods=['GET', 'POST'])
 def index():
-    entry = session['entry']
+    entry = session.get('entry')
     if request.method == "POST":
         if request.form.get('DOWN') == 'Download':
             download_page(session['image_url'], entry, "_".join(entry)) # Use session-stored image URLs for downloading functionality

@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,19 +17,7 @@
             height: auto;
             background-color: #313131;
             position: relative; /* Added for absolute positioning of the corner button */
-        }
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            padding: 20px;
-        }
-        .image {
-            max-width: 150px;
-            max-height: auto;
-            cursor: pointer; /* Indicate the image is clickable */
-            transition: transform 0.2s; /* Optional: for a visual effect on select */
-        }
+        }        
         #topRectangle {
             position: fixed;
             top: 0;
@@ -56,44 +45,14 @@
             background-color: gray;
             z-index: 3; /* Ensure it's below other content */
         }
-        .dl-button-container {
-             position: absolute;
-             bottom: 350px;
-             left: 550px;
-             margin: 20px;
-         }
-         #dlButton {
-             padding: 10px 20px;
-             background-color: #402b26;
-             color: #F3F3F3;
-             border: none;
-             cursor: pointer;
-             border-radius: 3px;
-             transition: background-color 0.3s ease; /* Smooth transition for background color */
-             font-family: 'Georgia', serif;
-         }
-         #dlButton:hover {
-             background-color: #4E342E; /* Darker shade for hover/focus, assuming same as 'Next' button */
-             transform: scale(1.02);
-         }
-         #dlButton:active {
-             background-color: #50372f; /* Darker shade when pressed */
-             transform: scale(0.98); /* Slightly scale down the button */
-         }                 
+        
+        /* train button */
+               
         .training-button-container {
             position: absolute;
             top: 80px;
             right: 40px;
             margin: 20px;
-        }
-        #DisplayResult {
-            width: 70%;
-            height: auto;
-            position: absolute;
-            top: 200px;
-            left: 100px;
-            overflow-y: auto;
-            z-index: -3
         }
         #TrainingButton {
             position: fixed;
@@ -116,14 +75,35 @@
             background-color: #50372f; /* Darker shade when pressed */
             transform: scale(0.98); /* Slightly scale down the button */
         }
-        #dropZone img {
-            width: 100%; /* Make images fill the drop zone in width */
-            height: auto; /* Maintain aspect ratio */
-            object-fit: contain; /* Ensures the image is scaled properly */
-            border-radius: 15px; /* Rounded corners for the images */
-        }  
+
+        /* search page button */
+
+        #SearchButton {
+            position: fixed;
+            top: 20px; /* Adjust as needed to fit your design */
+            left: 20px; /* Keep it 20px away from the right edge for consistency */
+            padding: 10px 20px;
+            background-color: #402b26;
+            color: #F3F3F3;
+            border: none;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: background-color 0.3s ease; /* Smooth transition for background color */
+            font-family: 'Georgia', serif;
+        }
+        #SearchButton:hover {
+            background-color: #4E342E; /* Darker shade for hover/focus, assuming same as 'Next' button */
+            transform: scale(1.02);
+        }
+        #SearchButton:active {
+            background-color: #50372f; /* Darker shade when pressed */
+            transform: scale(0.98); /* Slightly scale down the button */
+        }
+        
+        /* train window */
+        
         #trainTab {
-            display: none;
+            display: block;
             position: absolute;
             width: 700px;
             height: 350px;
@@ -143,12 +123,16 @@
             overflow: hidden; /* Ensures content respects the container's rounded corners */
             z-index: 103;
         }
-
-        .left-container {
-            flex-grow: 1;
-            padding: 20px;
+        #dropZone img {
+            width: 100%; /* Make images fill the drop zone in width */
+            height: auto; /* Maintain aspect ratio */
+            object-fit: contain; /* Ensures the image is scaled properly */
+            border-radius: 15px; /* Rounded corners for the images */
         }
-       .right-container {
+        
+        /* tag frame */
+        
+        .right-container {
             position: fixed; /* or 'absolute' depending on your needs */
             top: 94px; /* Start the container 95px from the top */
             right: -15px; /* Place the container 20px from the right edge of the viewport */
@@ -156,10 +140,6 @@
             display: flex;
             flex-direction: column;
             height: calc(100vh - 95px); /* Subtract 95px from the full viewport height */
-        }
-        .image-container img {
-            width: 25%;
-            height: auto;
         }
         .scrollable-frame {
             overflow-y: auto;
@@ -179,70 +159,7 @@
         .scrollable-frame img:focus {
             cursor: grabbing;
             opacity: 0.5;
-        }
-        .search-container {
-            position: fixed;
-            display: flex;
-            align-items: center;
-        }
-        #SearchButton {
-            padding: 10px 20px;
-            background-color: #402b26;
-            color: #F3F3F3;
-            border: none;
-            cursor: pointer;
-            border-radius: 4px;
-            transition: background-color 0.3s ease; /* Smooth transition for background color */
-            font-family: 'Georgia', serif;
-        }
-        #SearchButton:hover {
-            background-color: #4E342E; /* Darker shade for hover/focus, assuming same as 'Next' button */
-            transform: scale(1.02);
-        }
-        #SearchButton:active {
-            background-color: #50372f; /* Darker shade when pressed */
-            transform: scale(0.98); /* Slightly scale down the button */
-        }
-        .search-container input[type="text"], .search-container input[type="image"] {
-            margin-right: 1px;
-        }
-        .search-container input[type="image"] {
-            height: 80px;
-            border: 8px;
-            cursor: pointer;
-        }
-        .search-container input[type="text"] {
-            height: 30px;
-            border: 3px;
-            border-radius: 11px;
-            cursor: pointer;
-        }
-        /* Style for selected images */
-        .selected {
-            outline: 5px solid #ff9933;
-            transform: scale(0.95);
-        }
-        #deleteSelectedImages {
-            position: fixed;
-            top: 110px;
-            left: 200px;
-            padding: 10px 20px;
-            background-color: #d9534f; /* Bootstrap's btn-danger color */
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-family: Arial, sans-serif;
-            margin-top: 20px; /* Adjust based on layout */
-            z-index: 10;
-        }       
-
-        #deleteSelectedImages:hover {
-            background-color: #c9302c; /* Darker shade for hover */
-        }
-
-        #deleteSelectedImages:active {
-            background-color: #ac2925; /* Even darker shade for active/click */
+            transform: scale(0.93);
         }
 
     </style>
@@ -255,49 +172,14 @@
 
     <div class=".training-button-container">
         
-        <form action="/" method="POST">
-             <input type="submit" id="TrainingButton" name="ACCUEIL" value="Accueil"></button> <!-- id="SearchButton" -->
+        <form action="/training" method="POST">
+        <!-- button 'training' top right-->
+            <button id="TrainingButton">Training</button>
         </form>
 
-        <div class="left-container">
-            <div class="search-container">
-                <form action="/projet" method="POST">
-                    {% if search %}
-
-                    <input type="search" name="url_entry" value="{{ search }}">
-                    
-                    {% else %}
-
-                    <input type="search" name="url_entry" placeholder="   Il te faut quoi ?">
-
-                    {% endif %}
-
-                    {% if num %}
-
-                    <input type="search" name="num_entry" value="{{ num }}">
-                    
-                    {% else %}
-
-                    <input type="search" name="num_entry" placeholder="combien?">
-
-                    {% endif %}
-
-                    <input type="submit" id="SearchButton" name="VAL" value="Search"></button> <!-- id="SearchButton" -->
-
-                    
-                    
-                    <!-- Info Tab Content -->
-                    <h1 style="position: fixed; top: 130px; text-align:center; font-size: 200%; color: white; font-family: 'Georgia', serif">Entrainement modèle classification</h1>
-                      
-                   <!-- //Use the style attribute for styling HTML elements
-                    <p style="text-align:center;">Centered paragraph.</p> -->
-                        <div class="dropZone" style="position: fixed; top: 200px; left: 80px; width: 297px; height: 68.25px; background-color: #555; border: 2px dashed #bbb; border-radius: 15px; margin: 10px auto; overflow: none;">Category 1</div>
-                        <!-- Duplicated drop zone -->
-                        <div class="dropZone" style="position: fixed; top: 300px; left: 80px; width: 297px; height: 68.25px; background-color: #555; border: 2px dashed #bbb; border-radius: 15px; margin: 10px auto; overflow: none;">Category 2</div>
-                   
-                </form>
-            </div>
-        </div>
+        <form action="/" method="post">
+            <button id="SearchButton">Search page</button>
+        </form>
     </div>
         
     
