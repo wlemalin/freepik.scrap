@@ -171,7 +171,7 @@
     <div id="gray2Rectangle"></div>
 
     <div class=".training-button-container">
-        
+        <button id="startTrainingButton" style="position: fixed; top: 300px; left: 550px; z-index: 150">Start training</button>
         <form action="/" method="POST">
         <!-- button 'training' top right-->
             <button id="TrainingButton">Acceuil</button>
@@ -190,7 +190,7 @@
         <div class="scrollable-frame" id="scrollableFrame">
             {% if tag_list %}
                 {%- for url in tag_list %}
-                <img src="{{ url -}}" alt="Image" draggable="True" id="img10">
+                <img src="{{ url -}}" alt="Image" draggable="True" id="{{ url -}}">
                 {% endfor %}
             {% endif %}    
         </div>
@@ -273,6 +273,38 @@
                 }
             }, false);
         });
+    });
+    document.addEventListener('DOMContentLoaded', () => {
+        const startTrainingButton = document.getElementById('startTrainingButton');
+
+        if (startTrainingButton) {
+            startTrainingButton.addEventListener('click', () => {
+                // Select all images within the dropZone container(s)
+                const dropZoneImages = document.querySelectorAll('.dropZone img');
+
+                // Create an array of the image names or IDs
+                // Assuming you want to fetch the 'name' or 'id' attribute of the images
+                // Adjust according to what uniquely identifies your images for training
+                const imageNames = Array.from(dropZoneImages).map(img => img.getAttribute('name') || img.getAttribute('id'));
+
+                // Send the array to the server for starting the training process
+                fetch('/start-training', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ imageNames: imageNames }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                    // Optionally, update the UI based on the response, like showing training status
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+            });
+        }
     });
 
     </script>
