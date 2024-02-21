@@ -2,6 +2,7 @@ from flask import Flask, Blueprint, render_template, request, jsonify, session
 from utils.folder_creation import check_init_folders
 from scraping.techprov2 import  *
 import os
+
 #get_tags, link, research, download_page, create_tag
 
 app = Flask(__name__)
@@ -57,6 +58,21 @@ def remove_images():
     # Confirm the removal via JSON response
     return jsonify({"success": session['image_url'], "message": "Images removed successfully."})
 
+@app.route('/start-training', methods=['POST'])
+def start_training():
+    data = request.json
+    image_names = data.get('imageNames', [])
+
+    # Here, you would start the training process with the provided image names
+    # For demonstration, let's just print the names
+    print("Starting training with images:", image_names)
+    training_classes = extract_train_classes(image_names)
+    session['training_classes'] = training_classes
+
+    # Return a success response
+    return jsonify({"success": session['training_classes'], "message": "Training started successfully with the provided images."})
+
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, use_reloader=False)
 
