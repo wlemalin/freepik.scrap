@@ -256,3 +256,21 @@ def get_tags():
     image_directory = './static/images/tags'
     image_urls = [os.path.join(image_directory, filename) for filename in os.listdir(image_directory) if filename.endswith(('.png', '.jpg', '.jpeg'))]        
     return image_urls
+
+
+def extract_train_classes(image_names):
+    pattern = r'\\([^\\]+)_tag'
+    class1=image_names[0]
+    class2=image_names[1]
+    class_1 = re.search(pattern, class1)
+    class_2 = re.search(pattern, class2)
+    if class_1:
+        # Extract the matched group, which is the content between the backslash and '_tag'
+        class_1 = class_1.group(1)
+        print(class_1)
+    if class_2:
+        # Extract the matched group, which is the content between the backslash and '_tag'
+        class_2 = class_2.group(1)
+        print(class_2)
+    return (class_1, class_2)
+        

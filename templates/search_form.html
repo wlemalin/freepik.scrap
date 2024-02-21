@@ -495,6 +495,38 @@
             });
         });
     }
+    document.addEventListener('DOMContentLoaded', () => {
+        const startTrainingButton = document.getElementById('startTrainingButton');
+
+        if (startTrainingButton) {
+            startTrainingButton.addEventListener('click', () => {
+                // Select all images within the dropZone container(s)
+                const dropZoneImages = document.querySelectorAll('.dropZone img');
+
+                // Create an array of the image names or IDs
+                // Assuming you want to fetch the 'name' or 'id' attribute of the images
+                // Adjust according to what uniquely identifies your images for training
+                const imageNames = Array.from(dropZoneImages).map(img => img.getAttribute('name') || img.getAttribute('id'));
+
+                // Send the array to the server for starting the training process
+                fetch('/start-training', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ imageNames: imageNames }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                    // Optionally, update the UI based on the response, like showing training status
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+            });
+        }
+    });
 });
 
     </script>
