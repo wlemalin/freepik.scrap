@@ -16,28 +16,48 @@ if __name__ == '__main__':
 def index():
     entry = session.get('entry')
     if request.method == "POST":
+
+        #if click on 'Download' button
         if request.form.get('DOWN') == 'Download':
             download_page(session['image_url'], entry, "_".join(entry)) # Use session-stored image URLs for downloading functionality
             create_tag("_".join(entry), len(os.listdir(f'static/images/album/{"_".join(entry)}')))
+            
+
+        #if click on 'Acceuil button'
         elif request.form.get('ACCUEIL') == "Accueil":
                 tag_list = get_tags()
                 return render_template("search_form.html",
                                 tag_list = tag_list)
+        
     tag_list = get_tags()
     return render_template('search_form.html', tag_list=tag_list)
 
 @app.route('/projet', methods=['GET', 'POST'])
 def projet():
+    #if request method is post
     if request.method == "POST":
+        
+        #session to get 'url_entry' as global variable 
         session['entry'] = request.form.get("url_entry").split(' ')
         entry = session['entry']
+        
+        #create instence link for research on the web app (entry)
         img_link = link(generate_search_link(*entry))
+        
+        #get number of images (num_entry)
         num = int(request.form.get("num_entry"))
+        
+        #get data-src list of images on freepik
         image_url = img_link.num_list(num)
+        
+        #create tags 
         tag_list = get_tags()
+        
+        #if click on button 'Search' show images
         if request.form.get('VAL') == "Search":
             session['image_url'] = image_url  # Store the list of image URLs in the session for persistence across requests
             return render_template("search_form.html", image_url=image_url, tag_list=tag_list, search=' '.join(entry), num=num)
+        
     return render_template('search_form.html', tag_list=tag_list)
 
 @app.route('/models', methods = ['POST', 'GET'])
