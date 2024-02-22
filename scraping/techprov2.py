@@ -170,7 +170,7 @@ def load_path(dirname:str):
     Returns:
         str: The path to the created directory.
     """
-    path = os.path.join(os.getcwd(), 'album/', dirname) 
+    path = os.path.join(f'{os.getcwd()}\\static\\images', 'album/', dirname) 
     if not os.path.exists(path):
         os. makedirs(path)
     return path
@@ -211,7 +211,7 @@ def create_tag(category, sample_size):
         sample_size (int): The sample size of the category.
     This function creates a tag image containing the category title and sample size information.
     """
-    pic_icon = Image.open(f"album/{category}/{category}1.jpg")       
+    pic_icon = Image.open(f"static/images/album/{category}/{category}1.jpg")       
     icon = pic_icon.resize((75,75))
     icon = icon.convert("RGBA")
     
@@ -274,3 +274,4 @@ def extract_train_classes(image_names):
         print(class_2)
     return (class_1, class_2)
         
+load_path("chat")
