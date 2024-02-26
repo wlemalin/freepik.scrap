@@ -221,6 +221,7 @@ def create_tag(category, sample_size):
     Args:
         category (str): The category for which the tag image is created.
         sample_size (int): The sample size of the category.
+        
     This function creates a tag image containing the category title and sample size information.
     """
     pic_icon = Image.open(f"static/images/album/{category}/{category}1.jpg")       
@@ -270,9 +271,13 @@ def get_tags():
 
 def extract_train_classes(image_names):
     """
-    A expliquer.
+    Fetch categories names from the tags in the drop zone
 
+    Args:
+        src of both tags
+        
     Returns:
+        Two category names for training
     """    
     pattern = r'\\([^\\]+)_tag'
     class1=image_names[0]
@@ -281,11 +286,7 @@ def extract_train_classes(image_names):
     class_2 = re.search(pattern, class2)
     
     if class_1:
-        # Extract the matched group, which is the content between the backslash and '_tag'
         class_1 = class_1.group(1)
-        print(class_1)
     if class_2:
-        # Extract the matched group, which is the content between the backslash and '_tag'
         class_2 = class_2.group(1)
-        print(class_2)
     return (class_1, class_2)
