@@ -2,6 +2,7 @@ from flask import Flask, Blueprint, render_template, request, jsonify, session
 from utils.folder_creation import check_init_folders
 from scraping.techprov2 import  *
 import os
+import re
 
 #get_tags, link, research, download_page, create_tag
 
@@ -16,19 +17,13 @@ if __name__ == '__main__':
 def index():
     entry = session.get('entry')
     if request.method == "POST":
-
-        #if click on 'Download' button
         if request.form.get('DOWN') == 'Download':
             download_page(session['image_url'], entry, "_".join(entry)) # Use session-stored image URLs for downloading functionality
-            create_tag("_".join(entry), len(os.listdir(f'static/images/album/{"_".join(entry)}')))
-            
-
-        #if click on 'Acceuil button'
+            create_tag("_".join(entry), len(os.listdir(f'static/album/{"_".join(entry)}')))
         elif request.form.get('ACCUEIL') == "Accueil":
                 tag_list = get_tags()
                 return render_template("search_form.html",
                                 tag_list = tag_list)
-        
     tag_list = get_tags()
     return render_template('search_form.html', tag_list=tag_list)
 
@@ -56,9 +51,8 @@ def projet():
         #if click on button 'Search' show images
         if request.form.get('VAL') == "Search":
             session['image_url'] = image_url  # Store the list of image URLs in the session for persistence across requests
-            return render_template("search_form.html", image_url=image_url, tag_list=tag_list, search=' '.join(entry), num=num)
-        
-    return render_template('search_form.html', tag_list=tag_list)
+            return render_template("search_form.html", image_url=image_url, tag_list=tag_list, search=' '.join(entry), num=num)   
+    #return render_template('search_form.html', tag_list=tag_list)
 
 @app.route('/models', methods = ['POST', 'GET'])
 def training():
@@ -92,7 +86,29 @@ def start_training():
     # Return a success response
     return jsonify({"success": session['training_classes'], "message": "Training started successfully with the provided images."})
 
+@app.route('/album_view', methods = ['POST'])
+def album_view():
+    if request.form.get('ALBUM') == "Album":
+        tag_list = get_tags()
+        list_fin = display_album('Arbre')
+        return render_template("album_form.html",
+                            tag_list = tag_list,
+                            list_fin = list_fin)
+  
+       
 
+@app.route('/album_display', methods=['POST'])
+def album_display():  
+    data = request.json  # This is the JSON data sent from the client
+    image_src = data.get('src', '')  # Extract the source of the clicked image
+    pattern = r'.*[/\\](.*)_tag\.png'
+    match = re.search(pattern, image_src)
+    match
+    if match:
+        category = match.group(1)
+        list_fin =display_album(category)
+    return jsonify({"imageUrls": list_fin})
+    
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, use_reloader=False)
 
