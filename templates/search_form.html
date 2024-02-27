@@ -264,6 +264,9 @@
         <form action="/models" method="POST">
              <input type="submit" id="TrainingButton" name="TRAIN" value="Training"></button> <!-- id="SearchButton" -->
         </form>
+        <form action="/album_view" method="POST">
+             <input type="submit" id="TrainingButton" name="ALBUM" value="Album" style="position: fixed; top: 20px; right: 130px;"></button> <!-- id="SearchButton" -->
+        </form>
     </div>
     <div class="left-container">
         <div class="search-container">
@@ -314,7 +317,7 @@
         <div id="overlay" style="display:none;"></div>
         
         {% if request.endpoint == 'projet' %}
-        <button id="deleteSelectedImages" action='/proje'>Delete Selected Images</button>
+        <button id="deleteSelectedImages" action='/proj'>Delete Selected Images</button>
         {% endif %}
         
         <div id="DisplayResult">
@@ -495,6 +498,38 @@
             });
         });
     }
+    document.addEventListener('DOMContentLoaded', () => {
+        const startTrainingButton = document.getElementById('startTrainingButton');
+
+        if (startTrainingButton) {
+            startTrainingButton.addEventListener('click', () => {
+                // Select all images within the dropZone container(s)
+                const dropZoneImages = document.querySelectorAll('.dropZone img');
+
+                // Create an array of the image names or IDs
+                // Assuming you want to fetch the 'name' or 'id' attribute of the images
+                // Adjust according to what uniquely identifies your images for training
+                const imageNames = Array.from(dropZoneImages).map(img => img.getAttribute('name') || img.getAttribute('id'));
+
+                // Send the array to the server for starting the training process
+                fetch('/start-training', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ imageNames: imageNames }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                    // Optionally, update the UI based on the response, like showing training status
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+            });
+        }
+    });
 });
 
     </script>
