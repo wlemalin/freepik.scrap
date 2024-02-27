@@ -90,10 +90,10 @@ def start_training():
 def album_view():
     if request.form.get('ALBUM') == "Album":
         tag_list = get_tags()
-        list_fin = display_album('Arbre')
+        displayed_album = []
         return render_template("album_form.html",
                             tag_list = tag_list,
-                            list_fin = list_fin)
+                            displayed_album = displayed_album)
   
        
 
@@ -101,13 +101,8 @@ def album_view():
 def album_display():  
     data = request.json  # This is the JSON data sent from the client
     image_src = data.get('src', '')  # Extract the source of the clicked image
-    pattern = r'.*[/\\](.*)_tag\.png'
-    match = re.search(pattern, image_src)
-    match
-    if match:
-        category = match.group(1)
-        list_fin =display_album(category)
-    return jsonify({"imageUrls": list_fin})
+    displayed_album = from_name_get_album(from_tag_get_name(image_src))
+    return jsonify({"imageUrls": displayed_album})
     
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=False)

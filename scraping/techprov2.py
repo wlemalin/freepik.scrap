@@ -289,13 +289,39 @@ def extract_train_classes(image_names):
         class_2 = class_2.group(1)
     return (class_1, class_2)
 
-def display_album(category:str):
-    list_fin=[]
+def from_tag_get_name(tag_src):
+    """
+    Get the name of the category from its tag's src
+    
+    Args:
+       A tag's path
+        
+    Returns:
+       The name of the category associated with the tag
+    """  
+    pattern = r'.*[/\\](.*)_tag\.png'
+    match = re.search(pattern, tag_src)
+    match
+    if match:
+        category = match.group(1)
+    return category
+
+def from_name_get_album(category:str):
+    """
+    Create a list of all the images in a given album
+    
+    Args:
+        Name of the category
+        
+    Returns:
+        A list of path for all images in an album
+    """  
+    displayed_album =[]
     category = category.capitalize()
     list_display = os.listdir(f"./static/images/album/{category}")
     ab = (f"./static/images/album/{category}/")
     ab
     for i in range(len(list_display)):
         print(i)
-        list_fin.append(os.path.join(ab,list_display[i]))
-    return list_fin
+        displayed_album.append(os.path.join(ab,list_display[i]))
+    return displayed_album
