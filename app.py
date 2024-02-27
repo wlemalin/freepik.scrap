@@ -2,7 +2,6 @@ from flask import Flask, Blueprint, render_template, request, jsonify, session
 from utils.folder_creation import check_init_folders
 from scraping.techprov2 import  *
 import os
-import re
 
 #get_tags, link, research, download_page, create_tag
 
