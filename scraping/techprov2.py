@@ -170,12 +170,10 @@ def load_path(dirname:str):
     Returns:
         str: The path to the created directory.
     """
-    path = os.path.join(f'{os.getcwd()}\\static\\images', 'album/', dirname) 
+    path = os.path.join(os.getcwd(), 'static', 'images', 'album', dirname) 
     if not os.path.exists(path):
-        os. makedirs(path)
+        os.makedirs(path)
     return path
-
-
 
 def download_image(url, dirname, file_name):
     """
@@ -201,19 +199,17 @@ def download_page(url_list, dirname, file_name):
     """
     for i, url in enumerate(url_list):
         download_image(url, dirname, f"{file_name}{i}")
-
+        
 def image_downloaded_count(num, entry):
     """
     Args:
         num (int): Total number of images to download.
         entry (str): name of directory file in static/images/album/
-
     Returns:
         str: percentage of images already downloaded.
     """
     return f"{len(os.listdir(f'static/images/album/{entry}'))/num * 100} %"
-
-
+    
 def create_tag(category, sample_size):
     """
     Create a tag image for a category with a specified sample size.
@@ -221,10 +217,9 @@ def create_tag(category, sample_size):
     Args:
         category (str): The category for which the tag image is created.
         sample_size (int): The sample size of the category.
-        
     This function creates a tag image containing the category title and sample size information.
     """
-    pic_icon = Image.open(f"static/images/album/{category}/{category}1.jpg")       
+    pic_icon = Image.open(f"static/images/album/{category}/{category}1.jpg")   
     icon = pic_icon.resize((75,75))
     icon = icon.convert("RGBA")
     
@@ -240,6 +235,8 @@ def create_tag(category, sample_size):
     rounded_image = ImageOps.fit(icon, mask.size, centering=(0.5, 0.5))
     rounded_image.putalpha(mask)
     icon = rounded_image
+    
+    
     
     album_tag = Image.open('static/images/blank_class.png')
     album_tag = album_tag.convert("RGBA")
@@ -265,14 +262,14 @@ def get_tags():
         list: A list of file paths to tag images.
     """
     image_directory = './static/images/tags'
-    image_urls = [os.path.join(image_directory, filename) for filename in os.listdir(image_directory) if filename.endswith(('.png', '.jpg', '.jpeg'))]        
-    return image_urls
+    tag_list = [os.path.join(image_directory, filename) for filename in os.listdir(image_directory) if filename.endswith(('.png', '.jpg', '.jpeg'))]        
+    return tag_list
 
 
 def extract_train_classes(image_names):
     """
-    Fetch categories names from the tags in the drop zone
-
+    Fetches names of both categories from the tags in the drop zones
+    
     Args:
         src of both tags
         
@@ -284,9 +281,47 @@ def extract_train_classes(image_names):
     class2=image_names[1]
     class_1 = re.search(pattern, class1)
     class_2 = re.search(pattern, class2)
-    
     if class_1:
+        # Extract the matched group, which is the content between the backslash and '_tag'
         class_1 = class_1.group(1)
     if class_2:
+        # Extract the matched group, which is the content between the backslash and '_tag'
         class_2 = class_2.group(1)
     return (class_1, class_2)
+
+def from_tag_get_name(tag_src):
+    """
+    Get the name of the category from its tag's src
+    
+    Args:
+       A tag's path
+        
+    Returns:
+       The name of the category associated with the tag
+    """  
+    pattern = r'.*[/\\](.*)_tag\.png'
+    match = re.search(pattern, tag_src)
+    match
+    if match:
+        category = match.group(1)
+    return category
+
+def from_name_get_album(category:str):
+    """
+    Create a list of all the images in a given album
+    
+    Args:
+        Name of the category
+        
+    Returns:
+        A list of path for all images in an album
+    """  
+    displayed_album =[]
+    category = category.capitalize()
+    list_display = os.listdir(f"./static/images/album/{category}")
+    ab = (f"./static/images/album/{category}/")
+    ab
+    for i in range(len(list_display)):
+        print(i)
+        displayed_album.append(os.path.join(ab,list_display[i]))
+    return displayed_album
