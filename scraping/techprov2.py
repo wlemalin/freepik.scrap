@@ -319,9 +319,8 @@ def from_name_get_album(category:str):
     displayed_album =[]
     category = category.capitalize()
     list_display = os.listdir(f"./static/images/album/{category}")
-    ab = (f"./static/images/album/{category}/")
-    ab
+    album_path = (f"./static/images/album/{category}/")
     for i in range(len(list_display)):
         print(i)
-        displayed_album.append(os.path.join(ab,list_display[i]))
+        displayed_album.append(os.path.join(album_path,list_display[i]))
     return displayed_album
