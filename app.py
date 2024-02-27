@@ -19,7 +19,7 @@ def index():
     if request.method == "POST":
         if request.form.get('DOWN') == 'Download':
             download_page(session['image_url'], entry, "_".join(entry)) # Use session-stored image URLs for downloading functionality
-            create_tag("_".join(entry), len(os.listdir(f'static/album/{"_".join(entry)}')))
+            create_tag("_".join(entry), len(os.listdir(f'static/images/album/{"_".join(entry)}')))
         elif request.form.get('ACCUEIL') == "Accueil":
                 tag_list = get_tags()
                 return render_template("search_form.html",
@@ -52,7 +52,7 @@ def projet():
         if request.form.get('VAL') == "Search":
             session['image_url'] = image_url  # Store the list of image URLs in the session for persistence across requests
             return render_template("search_form.html", image_url=image_url, tag_list=tag_list, search=' '.join(entry), num=num)   
-    #return render_template('search_form.html', tag_list=tag_list)
+    return render_template('search_form.html', tag_list=tag_list)
 
 @app.route('/models', methods = ['POST', 'GET'])
 def training():

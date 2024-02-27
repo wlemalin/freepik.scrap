@@ -170,7 +170,7 @@ def load_path(dirname:str):
     Returns:
         str: The path to the created directory.
     """
-    path = os.path.join(os.getcwd(), 'static','album', dirname) 
+    path = os.path.join(os.getcwd(), 'static', 'images', 'album', dirname) 
     if not os.path.exists(path):
         os.makedirs(path)
     return path
@@ -199,6 +199,16 @@ def download_page(url_list, dirname, file_name):
     """
     for i, url in enumerate(url_list):
         download_image(url, dirname, f"{file_name}{i}")
+        
+def image_downloaded_count(num, entry):
+    """
+    Args:
+        num (int): Total number of images to download.
+        entry (str): name of directory file in static/images/album/
+    Returns:
+        str: percentage of images already downloaded.
+    """
+    return f"{len(os.listdir(f'static/images/album/{entry}'))/num * 100} %"
     
 def create_tag(category, sample_size):
     """
@@ -209,7 +219,7 @@ def create_tag(category, sample_size):
         sample_size (int): The sample size of the category.
     This function creates a tag image containing the category title and sample size information.
     """
-    pic_icon = Image.open(f"static/album/{category}/{category}1.jpg")   
+    pic_icon = Image.open(f"static/images/album/{category}/{category}1.jpg")   
     icon = pic_icon.resize((75,75))
     icon = icon.convert("RGBA")
     
@@ -257,6 +267,15 @@ def get_tags():
 
 
 def extract_train_classes(image_names):
+    """
+    Fetches names of both categories from the tags in the drop zones
+    
+    Args:
+        src of both tags
+        
+    Returns:
+        Two category names for training
+    """    
     pattern = r'\\([^\\]+)_tag'
     class1=image_names[0]
     class2=image_names[1]
@@ -265,18 +284,16 @@ def extract_train_classes(image_names):
     if class_1:
         # Extract the matched group, which is the content between the backslash and '_tag'
         class_1 = class_1.group(1)
-        print(class_1)
     if class_2:
         # Extract the matched group, which is the content between the backslash and '_tag'
         class_2 = class_2.group(1)
-        print(class_2)
     return (class_1, class_2)
 
 def display_album(category:str):
     list_fin=[]
     category = category.capitalize()
-    list_display = os.listdir(f"./static/album/{category}")
-    ab = (f"./static/album/{category}/")
+    list_display = os.listdir(f"./static/images/album/{category}")
+    ab = (f"./static/images/album/{category}/")
     ab
     for i in range(len(list_display)):
         print(i)
