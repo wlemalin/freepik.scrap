@@ -220,7 +220,7 @@
         img.addEventListener('click', function() {
             const imageSrc = this.getAttribute('src'); // Get the 'src' attribute of the clicked image
 
-            fetch('/album_display', {
+            fetch('/album_dynamic_display', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
