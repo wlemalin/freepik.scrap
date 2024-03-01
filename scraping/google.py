@@ -4,8 +4,14 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 import requests
 import base64
+import time 
 import os
 import re
+
+from selenium import webdriver 
+from selenium.webdriver.common.by import By 
+from selenium.webdriver.chrome.service import Service as ChromeService 
+
 
 
 def get_url(url):
@@ -36,6 +42,30 @@ def get_url(url):
     driver.get(url)
 
     driver.find_element(By.XPATH, """//*[@id="yDmH0d"]/c-wiz/div/div/div/div[2]/div[1]/div[3]/div[1]/div[1]/form[1]/div/div/button""").click()
+    
+    # scroll down to the bottom of the page
+    while True:
+
+        # instantiate height of webpage 
+        last_height = driver.execute_script('return document.body.scrollHeight')
+
+        driver.execute_script('window.scrollTo(0, document.body.scrollHeight);') 
+ 
+        # wait for content to load 
+        time.sleep(1) 
+ 
+        new_height = driver.execute_script('return document.body.scrollHeight') 
+    
+        if new_height == last_height: 
+            try:   
+                driver.find_element(By.XPATH, """//*[@id="islmp"]/div/div/div/div/div[1]/div[2]/div[2]/input""").click()
+                driver.execute_script('window.scrollTo(0, document.body.scrollHeight);')
+                new_height = driver.execute_script('return document.body.scrollHeight') 
+                
+            except:
+                break 
+    
+        last_height == new_height 
 
     page_html = driver.page_source
 
@@ -71,6 +101,7 @@ class link:
         self.url = url
         self.html = get_url(self.url)
 
+    #This function is useless for the version of scrit it will be helpfull to mutli-classes img
     def selector(self, number):
         """
         Scrap images and return the class name of the specified image.
