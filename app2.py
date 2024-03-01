@@ -66,10 +66,21 @@ def projet():
 @app.route('/models', methods = ['POST', 'GET'])
 def training():
     if request.method == 'POST':
-        if request.form.get('TRAIN') == "Training":
+        if request.form.get('TRAIN') == "Models":
             tag_list = get_tags()
             return render_template("train_form.html",
                             tag_list = tag_list)
+
+@app.route('/models_storage', methods = ['POST', 'GET'])
+def my_models():
+    if request.method == 'POST':
+        if request.form.get('MODELS') == "My models":
+            tag_list = get_tags()
+            #fetch list of existing models
+            models_list = []
+            return render_template("train_form.html",
+                            tag_list = tag_list,
+                            models_list=models_list)
 
 @app.route('/remove-images', methods=['POST'])
 def remove_images():
@@ -115,5 +126,5 @@ def album_display():
     
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, use_reloader=False)
 
