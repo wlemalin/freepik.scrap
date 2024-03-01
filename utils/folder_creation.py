@@ -3,7 +3,8 @@ from os import mkdir, path
 def check_init_folders() -> None:
     folders = [
         './static/images/tags', 
-        './album'
+        './static/images/album',
+        './static/models'
     ]
     for folder in folders:
         if not path.exists(folder):
