@@ -1,0 +1,172 @@
+body {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin: 0;
+    padding: 0;
+    height: auto;
+    position: relative; /* Added for absolute positioning of the corner button */
+}    
+
+#topRectangle {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 95px; /* Adjust the height as needed */
+    background-color: black;
+    z-index: -2; /* Ensure it's below other content */
+}
+
+#gray1Rectangle {
+    position: fixed;
+    top: 92px;
+    left: 0;
+    width: 100%;
+    height: 3px; /* Adjust the height as needed */
+    background-color: gray; /* NEEDS TO BE DARKENED */
+    z-index: 3; /* Ensure it's below other content */
+}
+#gray2Rectangle {
+    position: fixed;
+    top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px; /* Adjust the height as needed */
+            background-color: gray;
+            z-index: 3; /* Ensure it's below other content */
+        }
+        
+        /* train button */
+               
+        .training-button-container {
+            position: absolute;
+            top: 80px;
+            right: 40px;
+            margin: 20px;
+        }
+        #TrainingButton {
+            position: fixed;
+            top: 20px; /* Adjust as needed to fit your design */
+            right: 20px; /* Keep it 20px away from the right edge for consistency */
+            padding: 10px 20px;
+            background-color: #402b26;
+            color: #F3F3F3;
+            border: none;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: background-color 0.3s ease; /* Smooth transition for background color */
+            font-family: 'Georgia', serif;
+}
+
+        #TrainingButton:hover {
+    background-color: #4E342E; /* Darker shade for hover/focus, assuming same as 'Next' button */
+    transform: scale(1.02);
+}
+
+        #TrainingButton:active {
+    background-color: #50372f; /* Darker shade when pressed */
+    transform: scale(0.98); /* Slightly scale down the button */
+}
+
+        /* search page button */
+
+#SearchButton {
+    position: fixed;
+    top: 20px; /* Adjust as needed to fit your design */
+    left: 20px; /* Keep it 20px away from the right edge for consistency */
+    padding: 10px 20px;
+    background-color: #402b26;
+    color: #F3F3F3;
+    border: none;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background-color 0.3s ease; /* Smooth transition for background color */
+    font-family: 'Georgia', serif;
+}
+
+        #SearchButton:hover {
+    background-color: #4E342E; /* Darker shade for hover/focus, assuming same as 'Next' button */
+    transform: scale(1.02);
+}
+
+        #SearchButton:active {
+    background-color: #50372f; /* Darker shade when pressed */
+    transform: scale(0.98); /* Slightly scale down the button */
+}        
+        /* train window */
+        
+#trainTab {
+    display: block;
+    position: absolute;
+    width: 700px;
+    height: 350px;
+    background-color: #333; /* Dark gray background */
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 110;
+    top: 105px; /* Center vertically */
+    left:15px; /* Center horizontally */
+    overflow: auto; /* Add scroll if content overflows */
+    /* Additional styling as needed */
+}
+
+        .dropZone {
+    /* Existing styles */
+    border-radius: 15px; /* Example border-radius */
+    overflow: hidden; /* Ensures content respects the container's rounded corners */
+    z-index: 103;
+}
+        
+#dropZone img {
+    width: 100%; /* Make images fill the drop zone in width */
+    height: auto; /* Maintain aspect ratio */
+    object-fit: contain; /* Ensures the image is scaled properly */
+    border-radius: 15px; /* Rounded corners for the images */
+}
+                
+.right-container {
+    position: fixed; /* or 'absolute' depending on your needs */
+    top: 94px; /* Start the container 95px from the top */
+    right: -15px; /* Place the container 20px from the right edge of the viewport */
+    width: 300px;        
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 95px); /* Subtract 95px from the full viewport height */
+}
+.scrollable-frame {
+    overflow-y: auto;
+    border-top: 1px solid #ccc;
+    flex-grow: 1;
+    padding: 10px 0; /* Add vertical padding */
+}
+
+        .scrollable-frame img {
+    width: calc(100% - 20px); /* Makes 20px less wide than the frame */
+    height: auto;
+    margin: 10px auto; /* Center images horizontally and add space between them */
+    display: block; /* Ensure margins work as expected */
+    cursor: pointer;
+    border-radius: 11px;
+}
+    .scrollable-frame img:active,
+    .scrollable-frame img:focus {
+    cursor: grabbing;
+    opacity: 0.5;
+    transform: scale(0.93);
+}
+
+#DisplayResult {
+    width: 70%;
+    height: auto;
+    position: absolute;
+    top: 200px;
+    left: 20px;
+    overflow-y: auto;
+    z-index: -3
+}
+    .image-container img {
+    width: 25%;
+    height: auto;
+}
