@@ -285,8 +285,8 @@ def extract_train_classes(image_names):
     A expliquer.
 
     Returns:
-    """    
-    pattern = r'\\([^\\]+)_tag'
+    """
+    pattern = r'.*[/\\](.*)_tag\.png'
     class1=image_names[0]
     class2=image_names[1]
     class_1 = re.search(pattern, class1)
