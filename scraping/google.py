@@ -194,11 +194,16 @@ def download_image(url:str, dirname, file_name):
         dirname (str): The name of the directory to save the image in.
         file_name (str): The desired file name for the downloaded image.
     """
-    if 'data:image/jpeg;base64' in url:
-        data = url.split(',')[1]
-        image_data = base64.b64decode(data)
+    accepted_images = ["data:image/jpeg;base64", "data:image/png;base64", "data:image/jpg;base64", "data:image/svg;base64"]
+    image_data = b''
+    
+    for accepted_image in accepted_images:
+        if accepted_image in url:
+            data = url.split(',')[1]
+            image_data = base64.b64decode(data)
+            break
 
-    else : 
+    if image_data == b'':
         image_data = requests.get(url).content
         
     # Open a file and write the decoded image data to it
