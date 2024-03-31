@@ -19,12 +19,17 @@ training_classes = None
 @app.route("/", methods=['GET', 'POST'])
 def index():
     if request.method == "POST":
+        
         #if click on 'Download' button
         if request.form.get('DOWN') == 'Download':
-            global entry  # Declare that we're using the global variable
-            global image_url  # Declare that we're using the global variable
+            # Declare that we're using the global variable (user's entry declared thanks to jinja)
+            global entry  
+            global image_url 
+
+            # Download pages and tags  
             download_page(image_url, entry, "_".join(entry)) # Use session-stored image URLs for downloading functionality
             create_tag("_".join(entry), len(os.listdir(f'static/images/album/{"_".join(entry)}')))
+        
         #if click on 'Acceuil' button
         elif request.form.get('ACCUEIL') == "Accueil":
                 tag_list = get_tags()
@@ -37,31 +42,38 @@ def index():
 
 @app.route('/projet', methods=['GET', 'POST'])
 def projet():
-    #if request method is post
-        #if click on button 'Search' show images
     if request.method == "POST":
         
+        #if click on search 
         if request.form.get('VAL') == "Search":
-            global entry  # Declare that we're using the global variable
-            global image_url  # Declare that we're using the global variable
-            entry = request.form.get("url_entry").split(' ')
-            print(entry)
             
-            #create instence link for research on the web app (entry)
-            img_link = link(generate_search_link(*entry))
+            #if url_entry is empty 
+            if not request.form['url_entry'].strip():
+                error = 'Le champ de recherche doit être rempli.'
             
-            #get number of images (num_entry)
-            num = int(request.form.get("num_entry"))
-            
-            #get data-src list of images on freepik
-            image_url = img_link.url_list(num=num)
-            
+            else:
+                global entry  # Declare that we're using the global variable
+                global image_url  # Declare that we're using the global variable
+                entry = request.form.get("url_entry").split(' ')
+                
+                #create instence link for research on the web app (entry)
+                img_link = link(generate_search_link(*entry))
+                
+                #get number of images (num_entry)
+                num = int(request.form.get("num_entry"))
+                
+                #get data-src list of images on freepik
+                image_url = img_link.url_list(num=num)
+                
+                #create tags 
+                tag_list = get_tags()
+                
+                return render_template("search_form.html", image_url=image_url, tag_list=tag_list, search=' '.join(entry), num=num)
+       
             #create tags 
             tag_list = get_tags()
-            
-            return render_template("search_form.html", image_url=image_url, tag_list=tag_list, search=' '.join(entry), num=num)
-            
-        return render_template('search_form.html', tag_list=tag_list)
+
+        return render_template('search_form.html', tag_list=tag_list, error=error)
 
 @app.route('/models', methods = ['POST', 'GET'])
 def training():
