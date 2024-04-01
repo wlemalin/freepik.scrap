@@ -1,6 +1,7 @@
 from flask import Flask, Blueprint, render_template, request, jsonify, session
 from utils.folder_creation import check_init_folders
 from scraping.google import  *
+from cnn.model_building import *
 import os
 
 #get_tags, link, research, download_page, create_tag
@@ -9,7 +10,6 @@ app = Flask(__name__)
 app.secret_key = 'your_very_secret_key_here'  # Set a secure secret key
 
 if __name__ == '__main__':
-    # Initial checks
     check_init_folders()
     
 entry = None
@@ -21,9 +21,9 @@ def index():
     if request.method == "POST":
         #if click on 'Download' button
         if request.form.get('DOWN') == 'Download':
-            global entry  # Declare that we're using the global variable
-            global image_url  # Declare that we're using the global variable
-            download_page(image_url, entry, "_".join(entry)) # Use session-stored image URLs for downloading functionality
+            global entry
+            global image_url
+            download_page(image_url, entry, "_".join(entry))
             create_tag("_".join(entry), len(os.listdir(f'static/images/album/{"_".join(entry)}')))
         #if click on 'Acceuil' button
         elif request.form.get('ACCUEIL') == "Accueil":
@@ -38,12 +38,12 @@ def index():
 @app.route('/projet', methods=['GET', 'POST'])
 def projet():
     #if request method is post
-        #if click on button 'Search' show images
     if request.method == "POST":
         
+        #if click on button 'Search' show images
         if request.form.get('VAL') == "Search":
-            global entry  # Declare that we're using the global variable
-            global image_url  # Declare that we're using the global variable
+            global entry
+            global image_url
             entry = request.form.get("url_entry").split(' ')
             print(entry)
             
@@ -97,14 +97,16 @@ def start_training():
     global training_classes
     data = request.json
     image_names = data.get('imageNames', [])
+    training_classes = extract_train_classes(image_names)
 
     # Here, you would start the training process with the provided image names
     # For demonstration, let's just print the names
     print("Starting training with images:", image_names)
-    training_classes = extract_train_classes(image_names)
-
-    # Return a success response
+    accuracy = train_and_get_info(training_classes[0], training_classes[1])
+    print(accuracy)
     return jsonify({"success": training_classes, "message": "Training started successfully with the provided images."})
+    # render template for mod result + button to dl model
+
 
 @app.route('/album_viewer_tab', methods = ['POST'])
 def album_viewer_tab():
@@ -126,5 +128,5 @@ def album_display():
     
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, use_reloader=False)
 
