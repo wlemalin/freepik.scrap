@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Form</title>
+    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"> -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/album.css') }}">
+</head>
+<body>
+
+    <div id="topRectangle"></div>
+    <div id="gray1Rectangle"></div>
+    <div id="gray2Rectangle"></div>
+
+    <div class=".training-button-container">
+        <form action="/" method="POST">
+        <!-- button 'training' top right-->
+            <input type="submit" id="TrainingButton" name="ACCUEIL" value="Accueil" style="position: fixed; top: 20px; right: 12px;"></button>
+        </form>
+    </div>
+           
+    <div class="right-container">
+        <div class="scrollable-frame" id="scrollableFrame">
+            {% if tag_list %}
+                {%- for url in tag_list %}
+                <img src="{{ url -}}" alt="Image" draggable="True" id="{{ url -}}">
+                {% endfor %}
+            {% endif %}    
+        </div>
+    </div>
+    <div class="image-container">
+        <div id="DisplayResult">
+    
+            {% if displayed_album %}
+            
+                {%- for url in displayed_album %}
+
+                <img src="{{ url -}}" alt="Imag" id="{{ url -}}"/>
+
+                {% endfor %}
+                
+            {% endif %}    
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/album.js') }}"></script>
+</body>
+</html>
+
+
+
+
+
+
+
