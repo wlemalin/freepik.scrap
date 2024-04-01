@@ -37,6 +37,11 @@
     {% if request.endpoint == 'training' %}
         <div id="trainTab">
             <button id="startTrainingButton" style="position: fixed; top: 300px; left: 550px; z-index: 150">Start training</button>
+            
+            <form action="/train-result" method="POST">
+                <input type="submit" id="ResultButton" name="RESULT" value="Result" style="position: fixed; top: 360px; left: 550px; z-index: 150:"></button>
+            </form>
+            
             <h1 style="text-align:center; font-size: 200%; color: white; font-family: 'Georgia', serif">Entrainement modèle classification</h1>
             <div class="dropZone" style="position: relative; top: 20px; left: 20px; width: 297px; height: 68.25px; background-color: #555; border: 2px dashed #bbb; border-radius: 15px; margin: 10px auto; overflow: none;">Category 1</div>
             <div class="dropZone" style="position: relative; top: 80px; left: 20px; width: 297px; height: 68.25px; background-color: #555; border: 2px dashed #bbb; border-radius: 15px; margin: 10px auto; overflow: none;">Category 2</div>
