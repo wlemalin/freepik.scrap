@@ -1,6 +1,7 @@
-from flask import Flask, Blueprint, render_template, request, jsonify, session
+from flask import Flask, Blueprint, render_template, request, jsonify, session, send_from_directory
 from utils.folder_creation import check_init_folders
 from scraping.google import  *
+from cnn.model_building import *
 import os
 
 #get_tags, link, research, download_page, create_tag
@@ -9,12 +10,12 @@ app = Flask(__name__)
 app.secret_key = 'your_very_secret_key_here'  # Set a secure secret key
 
 if __name__ == '__main__':
-    # Initial checks
     check_init_folders()
     
 entry = None
 image_url = None
 training_classes = None
+accuracy = None
 
 @app.route("/", methods=['GET', 'POST'])
 def index():
@@ -34,7 +35,7 @@ def index():
         elif request.form.get('ACCUEIL') == "Accueil":
                 tag_list = get_tags()
                 return render_template("search_form.html",
-                                tag_list = tag_list)
+                                tag_list = tag_list)    
     
     tag_list = get_tags()
     return render_template('search_form.html', tag_list=tag_list)
@@ -42,10 +43,21 @@ def index():
 
 @app.route('/projet', methods=['GET', 'POST'])
 def projet():
+    #if request method is post
     if request.method == "POST":
         
-        #if click on search 
+        #if click on button 'Search' show images
         if request.form.get('VAL') == "Search":
+            global entry
+            global image_url
+            entry = request.form.get("url_entry").split(' ')
+            print(entry)
+            
+            #create instence link for research on the web app (entry)
+            img_link = link(generate_search_link(*entry))
+            
+            #get number of images (num_entry)
+            num = int(request.form.get("num_entry"))
             
             #if url_entry is empty 
             if not request.form['url_entry'].strip():
@@ -107,16 +119,40 @@ def remove_images():
 @app.route('/start-training', methods=['POST'])
 def start_training():
     global training_classes
+    global accuracy
     data = request.json
     image_names = data.get('imageNames', [])
+    training_classes = extract_train_classes(image_names)
 
     # Here, you would start the training process with the provided image names
     # For demonstration, let's just print the names
     print("Starting training with images:", image_names)
-    training_classes = extract_train_classes(image_names)
+    accuracy = train_and_get_info(training_classes[0], training_classes[1])
+    print(accuracy)
+    return jsonify({"accuracy": accuracy})
 
-    # Return a success response
-    return jsonify({"success": training_classes, "message": "Training started successfully with the provided images."})
+@app.route('/train-result', methods=['POST'])
+def result_training():
+    if request.method == 'POST':
+        if request.form.get('RESULT') == "Result":
+            global accuracy    
+            global training_classes
+            tag_list=get_tags()
+            return render_template("train_result.html",
+                                   accuracy=accuracy,
+                                   training_classes=training_classes,
+                                   tag_list=tag_list)
+
+
+@app.route('/model_dl', methods=['POST'])
+def dl_model():
+    if request.method == 'POST':
+        if request.form.get('MOD-DL') == 'mod-dl':
+            mod_name = f"Mod_{training_classes[0]}_{training_classes[1]}.keras"
+            directory = os.path.join(os.getcwd(),"static","models")
+            return send_from_directory(directory, mod_name, as_attachment=True)
+
+
 
 @app.route('/album_viewer_tab', methods = ['POST'])
 def album_viewer_tab():
@@ -138,5 +174,5 @@ def album_display():
     
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, use_reloader=False)
 
