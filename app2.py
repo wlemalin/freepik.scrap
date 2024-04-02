@@ -49,41 +49,36 @@ def projet():
         #if click on button 'Search' show images
         if request.form.get('VAL') == "Search":
             global entry
-            global image_url
             entry = request.form.get("url_entry").split(' ')
-            print(entry)
-            
-            #create instence link for research on the web app (entry)
-            img_link = link(generate_search_link(*entry))
             
             #get number of images (num_entry)
             num = int(request.form.get("num_entry"))
-            
+
             #if url_entry is empty 
             if not request.form['url_entry'].strip():
                 error = 'Le champ de recherche doit être rempli.'
+                       
+                #create tags 
+                tag_list = get_tags()
+                
+                return render_template('search_form.html', tag_list=tag_list, error=error)
             
             else:
-                entry = request.form.get("url_entry").split(' ')
-                
+                print('la')
                 #create instence link for research on the web app (entry)
                 img_link = link(generate_search_link(*entry))
                 
-                #get number of images (num_entry)
-                num = int(request.form.get("num_entry"))
-                
                 #get data-src list of images on freepik
-                image_url = img_link.url_list(num=num) #, class_name='YQ4gaf'
+                global image_url
+                image_url = img_link.url_list(num=num) 
                 
                 #create tags 
                 tag_list = get_tags()
                 
                 return render_template("search_form.html", image_url=image_url, tag_list=tag_list, search=' '.join(entry), num=num)
-       
-            #create tags 
-            tag_list = get_tags()
 
-        return render_template('search_form.html', tag_list=tag_list, error=error)
+
+        
 
 @app.route('/models', methods = ['POST', 'GET'])
 def training():

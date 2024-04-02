@@ -353,9 +353,9 @@ def from_name_get_album(category:str):
     return displayed_album
 
 
-test = link(generate_search_link('chat'))
-list_url = test.url_list(100)
-len(list_url)
-
-
-test.c_list()
+#test = link(generate_search_link('chat'))
+#list_url = test.url_list(100)
+#len(list_url)
+#
+#
+#test.c_list()
