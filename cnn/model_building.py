@@ -3,7 +3,7 @@ import os
 import random
 import keras
 from sklearn.model_selection import train_test_split
-from tensorflow.keras import layers, models, optimizers
+from keras import layers, models, optimizers
 
 def load_and_preprocess_data(category1, category2, base_dir='./static/images/album', img_size=(128, 128)):
     """
@@ -28,7 +28,7 @@ def load_and_preprocess_data(category1, category2, base_dir='./static/images/alb
     # Assuming target_size=(128, 128) as the desired size for all images
 
     # Data augmentation for the training data
-    train_data_gen = tf.keras.preprocessing.image.ImageDataGenerator(
+    train_data_gen = keras.preprocessing.image.ImageDataGenerator(
         rescale=1./255,
         rotation_range=40,
         width_shift_range=0.2,
@@ -41,7 +41,7 @@ def load_and_preprocess_data(category1, category2, base_dir='./static/images/alb
     )
     
     # Only rescaling for the validation data, but resizing is implied in the flow_from_directory method
-    val_data_gen = tf.keras.preprocessing.image.ImageDataGenerator(
+    val_data_gen = keras.preprocessing.image.ImageDataGenerator(
         rescale=1./255,
         validation_split=0.2
     )
@@ -98,7 +98,7 @@ def train_and_get_info(category1, category2):
     model = build_model()
 
     # Compile the model
-    model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=0.001),
+    model.compile(optimizer=keras.optimizers.Adam(learning_rate=0.001),
               loss='binary_crossentropy',
               metrics=['accuracy'])
 
@@ -108,7 +108,7 @@ def train_and_get_info(category1, category2):
     train_ds, val_ds = load_and_preprocess_data(category1, category2)
 
     # Train the model
-    history = model.fit(train_ds, validation_data=val_ds, epochs=32, batch_size=32)  # Adjust epochs and batch_size as necessary
+    history = model.fit(train_ds, validation_data=val_ds, epochs=16, batch_size=32)  # Adjust epochs and batch_size as necessary
 
     mod_name = f"Mod_{category1}_{category2}"
     model.save(f'./static/models/{mod_name}.keras')
