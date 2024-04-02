@@ -108,7 +108,7 @@ def train_and_get_info(category1, category2):
     train_ds, val_ds = load_and_preprocess_data(category1, category2)
 
     # Train the model
-    history = model.fit(train_ds, validation_data=val_ds, epochs=16, batch_size=32)  # Adjust epochs and batch_size as necessary
+    history = model.fit(train_ds, validation_data=val_ds, epochs=32, batch_size=32)  # Adjust epochs and batch_size as necessary
 
     mod_name = f"Mod_{category1}_{category2}"
     model.save(f'./static/models/{mod_name}.keras')
@@ -123,5 +123,5 @@ def train_and_get_info(category1, category2):
     
 
 
-# b = keras.models.load_model(f'./static/models/{mod_name}.keras')
+# mod = keras.models.load_model(f'./static/models/{mod_name}.keras')
 
