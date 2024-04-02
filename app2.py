@@ -88,17 +88,6 @@ def training():
             return render_template("train_form.html",
                             tag_list = tag_list)
 
-@app.route('/models_storage', methods = ['POST', 'GET'])
-def my_models():
-    if request.method == 'POST':
-        if request.form.get('MODELS') == "My models":
-            tag_list = get_tags()
-            #fetch list of existing models
-            models_list = []
-            return render_template("train_form.html",
-                            tag_list = tag_list,
-                            models_list=models_list)
-
 @app.route('/remove-images', methods=['POST'])
 def remove_images():
     global entry  # Declare that we're using the global variable
