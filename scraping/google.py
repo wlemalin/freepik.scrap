@@ -36,12 +36,15 @@ def get_url(url):
     chrome_options.add_argument("--disable-notifications")
     chrome_options.add_argument('--ignore-certificate-errors') # Ignore les erreurs de certificat
     chrome_options.add_argument("--start-maximized")
+    #chrome_options.add_argument('--headless')
 
     driver=webdriver.Chrome(options=chrome_options)
     
     driver.get(url)
 
-    driver.find_element(By.XPATH, """//*[@id="yDmH0d"]/c-wiz/div/div/div/div[2]/div[1]/div[3]/div[1]/div[1]/form[1]/div/div/button""").click()
+    time.sleep(1)
+
+    driver.find_element(By.XPATH, """//*[@id="W0wltc"]/div""").click()
     
     # scroll down to the bottom of the page
     while True:
@@ -67,9 +70,11 @@ def get_url(url):
     
         last_height == new_height 
 
+    time.sleep(1)
+
     page_html = driver.page_source
 
-    driver.close()
+    #driver.close()
 
     return BeautifulSoup(page_html, 'html.parser')
 
@@ -150,7 +155,7 @@ class link:
         picture = soup.find_all('img', {'class': class_name})[image_number]['src']
         return picture
     
-    def url_list(self, num, class_name="rg_i Q4LuWd"):
+    def url_list(self, num, class_name="YQ4gaf"): #rg_i Q4LuWd
         """
         Return a list of picture URLs with a specific class name.
         
@@ -161,7 +166,8 @@ class link:
             list: A list of URLs of pictures with the specified class name.
         """
         soup = self.html
-        img_list = soup.find_all('img', {f'class': {class_name}})
+        img_list = soup.find_all(lambda tag: tag.name == 'img' and tag.get('class') == [class_name])
+        #img_list = soup.find_all('img', {f'class': {class_name}}) 
         url_list = [img['src'] for img in img_list if 'src' in img.attrs]
         return url_list[0:num]
 
@@ -189,11 +195,16 @@ def download_image(url:str, dirname, file_name):
         dirname (str): The name of the directory to save the image in.
         file_name (str): The desired file name for the downloaded image.
     """
-    if 'data:image/jpeg;base64' in url:
-        data = url.split(',')[1]
-        image_data = base64.b64decode(data)
+    accepted_images = ["data:image/jpeg;base64", "data:image/png;base64", "data:image/jpg;base64"]
+    image_data = b''
+    
+    for accepted_image in accepted_images:
+        if accepted_image in url:
+            data = url.split(',')[1]
+            image_data = base64.b64decode(data)
+            break
 
-    else : 
+    if image_data == b'':
         image_data = requests.get(url).content
         
     # Open a file and write the decoded image data to it
@@ -211,8 +222,12 @@ def download_page(url_list, dirname, file_name):
         dirname (str): The name of the directory to save the images in.
         file_name (str): The base file name for the downloaded images.
     """
-    for i, url in enumerate(url_list):
-        download_image(url, dirname, f"{file_name}{i}")
+    try:
+        for i, url in enumerate(url_list):
+            download_image(url, dirname, f"{file_name}{i}")
+    
+    except Exception as exception:
+        print(f"l'exception est : {exception}")
 
 def image_downloaded_count(num, entry):
     """
@@ -334,8 +349,13 @@ def from_name_get_album(category:str):
     list_display = os.listdir(f"./static/images/album/{category}")
     album_path = (f"./static/images/album/{category}/")
     for i in range(len(list_display)):
-        print(i)
         displayed_album.append(os.path.join(album_path,list_display[i]))
     return displayed_album
 
 
+#test = link(generate_search_link('chat'))
+#list_url = test.url_list(100)
+#len(list_url)
+#
+#
+#test.c_list()

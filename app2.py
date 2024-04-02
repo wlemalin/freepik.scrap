@@ -20,20 +20,25 @@ accuracy = None
 @app.route("/", methods=['GET', 'POST'])
 def index():
     if request.method == "POST":
+        
         #if click on 'Download' button
         if request.form.get('DOWN') == 'Download':
-            global entry
-            global image_url
-            download_page(image_url, entry, "_".join(entry))
+            # Declare that we're using the global variable (user's entry declared thanks to jinja)
+            global entry  
+            global image_url 
+
+            # Download pages and tags  
+            download_page(image_url, entry, "_".join(entry)) # Use session-stored image URLs for downloading functionality
             create_tag("_".join(entry), len(os.listdir(f'static/images/album/{"_".join(entry)}')))
+        
         #if click on 'Acceuil' button
         elif request.form.get('ACCUEIL') == "Accueil":
                 tag_list = get_tags()
                 return render_template("search_form.html",
-                                tag_list = tag_list)    
+                                tag_list = tag_list, image_url=image_url)    
     
     tag_list = get_tags()
-    return render_template('search_form.html', tag_list=tag_list)
+    return render_template('search_form.html', tag_list=tag_list, image_url=image_url)
 
 
 @app.route('/projet', methods=['GET', 'POST'])
@@ -44,25 +49,36 @@ def projet():
         #if click on button 'Search' show images
         if request.form.get('VAL') == "Search":
             global entry
-            global image_url
             entry = request.form.get("url_entry").split(' ')
-            print(entry)
-            
-            #create instence link for research on the web app (entry)
-            img_link = link(generate_search_link(*entry))
             
             #get number of images (num_entry)
             num = int(request.form.get("num_entry"))
+
+            #if url_entry is empty 
+            if not request.form['url_entry'].strip():
+                error = 'Le champ de recherche doit être rempli.'
+                       
+                #create tags 
+                tag_list = get_tags()
+                
+                return render_template('search_form.html', tag_list=tag_list, error=error)
             
-            #get data-src list of images on freepik
-            image_url = img_link.url_list(num=num)
-            
-            #create tags 
-            tag_list = get_tags()
-            
-            return render_template("search_form.html", image_url=image_url, tag_list=tag_list, search=' '.join(entry), num=num)
-            
-        return render_template('search_form.html', tag_list=tag_list)
+            else:
+                print('la')
+                #create instence link for research on the web app (entry)
+                img_link = link(generate_search_link(*entry))
+                
+                #get data-src list of images on freepik
+                global image_url
+                image_url = img_link.url_list(num=num) 
+                
+                #create tags 
+                tag_list = get_tags()
+                
+                return render_template("search_form.html", image_url=image_url, tag_list=tag_list, search=' '.join(entry), num=num)
+
+
+        
 
 @app.route('/models', methods = ['POST', 'GET'])
 def training():
@@ -152,4 +168,7 @@ def album_display():
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=False)
+
+
+
 
