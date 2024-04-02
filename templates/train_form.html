@@ -20,12 +20,6 @@
         <!-- button 'training' top right-->
             <input type="submit" id="TrainingButton" name="ACCUEIL" value="Accueil" style="position: fixed; top: 20px; right: 12px;"></button>
         </form>
-        
-    {% if request.endpoint == 'training' %}
-        <form action="/models_storage" method="POST">
-            <input type="submit" id="TrainingButton" name="MODELS" value="My models" style="position: fixed; top: 20px; right: 120px;"></button>
-        </form>
-    {% endif %}
     
     {% if request.endpoint == 'my_models' %}
         <form action="/models" method="POST">
