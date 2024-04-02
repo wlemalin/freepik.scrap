@@ -36,16 +36,18 @@
     
     {% if request.endpoint == 'training' %}
         <div id="trainTab">
-            <button id="startTrainingButton" style="position: fixed; top: 300px; left: 550px; z-index: 150">Lancer l'entrainement</button>
-            
-            <form action="/train-result" method="POST">
-                <input type="submit" id="ResultButton" name="RESULT" value="Résultat de l'entrainement" style="position: fixed; top: 360px; left: 550px; z-index: 150:"></button>
-            </form>
-            
-            <h1 style="text-align:center; font-size: 200%; color: white; font-family: 'Georgia', serif">Choix des catégories pour le modèle</h1>
-            <div class="dropZone" style="position: relative; top: 20px; left: 20px; width: 297px; height: 68.25px; background-color: #555; border: 2px dashed #bbb; border-radius: 15px; margin: 10px auto; overflow: none;"></div>
-            <div class="dropZone" style="position: relative; top: 80px; left: 20px; width: 297px; height: 68.25px; background-color: #555; border: 2px dashed #bbb; border-radius: 15px; margin: 10px auto; overflow: none;"></div>
+             <div class="dropZone" style="position: fixed; top: 200px; left: 50px; width: 297px; height: 68.25px; background-color: #555; border: 2px dashed #bbb; border-radius: 15px; margin: 10px auto; overflow: none;"></div>
+             <div class="dropZone" style="position: fixed; top: 200px; left: 370px; width: 297px; height: 68.25px; background-color: #555; border: 2px dashed #bbb; border-radius: 15px; margin: 10px auto; overflow: none;"></div>
+     
+             <button id="startTrainingButton" style="position: fixed; top: 320px; left: 255px; z-index: 150">Lancer l'entrainement</button>
+     
+             <form action="/train-result" method="POST">
+                 <input type="submit" id="ResultButton" name="RESULT" value="Résultat de l'entrainement" style="position: fixed; top: 385px; left: 240px; z-index: 150;"></input>
+             </form>
+     
+             <h1 style="text-align:center; font-size: 200%; color: white; font-family: 'Georgia', serif">Choix des catégories pour le modèle</h1>
         </div>
+
     {% endif %}
     
     <div class="right-container">
