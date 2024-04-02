@@ -168,7 +168,7 @@ class link:
         soup = self.html
         img_list = soup.find_all(lambda tag: tag.name == 'img' and tag.get('class') == [class_name])
         #img_list = soup.find_all('img', {f'class': {class_name}}) 
-        url_list = [img['src'] for img in img_list if 'src' in img.attrs]
+        url_list = [img['src'] for img in img_list if 'src' in img.attrs and 'data:image/gif;base64' not in img['src']]
         return url_list[0:num]
 
 def load_path(dirname:str):
@@ -352,10 +352,10 @@ def from_name_get_album(category:str):
         displayed_album.append(os.path.join(album_path,list_display[i]))
     return displayed_album
 
-
+#import os
 #test = link(generate_search_link('chat'))
 #list_url = test.url_list(100)
 #len(list_url)
-#
-#
+#download_page(list_url, 'test', 'test')
 #test.c_list()
+
