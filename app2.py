@@ -35,10 +35,10 @@ def index():
         elif request.form.get('ACCUEIL') == "Accueil":
                 tag_list = get_tags()
                 return render_template("search_form.html",
-                                tag_list = tag_list)    
+                                tag_list = tag_list, image_url=image_url)    
     
     tag_list = get_tags()
-    return render_template('search_form.html', tag_list=tag_list)
+    return render_template('search_form.html', tag_list=tag_list, image_url=image_url)
 
 
 @app.route('/projet', methods=['GET', 'POST'])
@@ -64,8 +64,6 @@ def projet():
                 error = 'Le champ de recherche doit être rempli.'
             
             else:
-                global entry  # Declare that we're using the global variable
-                global image_url  # Declare that we're using the global variable
                 entry = request.form.get("url_entry").split(' ')
                 
                 #create instence link for research on the web app (entry)
@@ -75,7 +73,7 @@ def projet():
                 num = int(request.form.get("num_entry"))
                 
                 #get data-src list of images on freepik
-                image_url = img_link.url_list(num=num)
+                image_url = img_link.url_list(num=num) #, class_name='YQ4gaf'
                 
                 #create tags 
                 tag_list = get_tags()
@@ -175,4 +173,7 @@ def album_display():
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=False)
+
+
+
 
