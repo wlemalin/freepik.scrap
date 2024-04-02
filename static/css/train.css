@@ -42,7 +42,6 @@ body {
     position: absolute;
     top: 80px;
     right: 40px;
-    margin: 20px;
 }
 #TrainingButton {
     position: fixed;
@@ -62,6 +61,76 @@ body {
     transform: scale(1.02);
 }
 #TrainingButton:active {
+    background-color: #50372f; /* Darker shade when pressed */
+    transform: scale(0.98); /* Slightly scale down the button */
+}
+
+
+
+#startTrainingButton {
+    position: fixed;
+    top: 20px; /* Adjust as needed to fit your design */
+    right: 20px; /* Keep it 20px away from the right edge for consistency */
+    padding: 10px 20px;
+    background-color: #402b26;
+    color: #F3F3F3;
+    border: none;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background-color 0.3s ease; /* Smooth transition for background color */
+    font-family: 'Georgia', serif;
+}
+#startTrainingButton:hover {
+    background-color: #4E342E; /* Darker shade for hover/focus, assuming same as 'Next' button */
+    transform: scale(1.02);
+}
+#startTrainingButton:active {
+    background-color: #50372f; /* Darker shade when pressed */
+    transform: scale(0.98); /* Slightly scale down the button */
+}
+
+
+#ResultButton {
+    position: fixed;
+    top: 20px; /* Adjust as needed to fit your design */
+    right: 20px; /* Keep it 20px away from the right edge for consistency */
+    padding: 10px 20px;
+    background-color: #402b26;
+    color: #F3F3F3;
+    border: none;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background-color 0.3s ease; /* Smooth transition for background color */
+    font-family: 'Georgia', serif;
+}
+#ResultButton:hover {
+    background-color: #4E342E; /* Darker shade for hover/focus, assuming same as 'Next' button */
+    transform: scale(1.02);
+}
+#ResultButton:active {
+    background-color: #50372f; /* Darker shade when pressed */
+    transform: scale(0.98); /* Slightly scale down the button */
+}
+
+
+#DLmodButton {
+    position: fixed;
+    top: 20px; /* Adjust as needed to fit your design */
+    right: 20px; /* Keep it 20px away from the right edge for consistency */
+    padding: 10px 20px;
+    background-color: #402b26;
+    color: #F3F3F3;
+    border: none;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background-color 0.3s ease; /* Smooth transition for background color */
+    font-family: 'Georgia', serif;
+}
+#DLmodButton:hover {
+    background-color: #4E342E; /* Darker shade for hover/focus, assuming same as 'Next' button */
+    transform: scale(1.02);
+}
+#DLmodButton:active {
     background-color: #50372f; /* Darker shade when pressed */
     transform: scale(0.98); /* Slightly scale down the button */
 }
